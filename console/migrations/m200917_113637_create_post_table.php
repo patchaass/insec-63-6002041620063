@@ -20,8 +20,8 @@ class m200917_113637_create_post_table extends Migration
             'is_active' => $this->boolean()->defaultValue(0),
             'created_at' => $this->integer(),
             'created_by' => $this->integer(),
-            'update_at' => $this->integer(),
-            'created_by' => $this->integer()
+            'updated_at' => $this->integer(),
+            'updated_by' => $this->integer()
         ]);
     }
 
