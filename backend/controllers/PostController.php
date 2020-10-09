@@ -8,7 +8,7 @@ use backend\models\PostSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+use common\components\AccessControl;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -21,16 +21,20 @@ class PostController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
+            // 'access' => [
+            //     'class' => AccessControl::className(),
+            //     'rules' => [
                    
-                    [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
+            //         [
+            //             'actions' => ['index', 'view', 'create', 'update', 'delete'],
+            //             'allow' => true,
+            //             'roles' => ['@'],
+            //         ],
+            //     ],
+            // ],
+            'access' => [
+                //'class' => '\common\components\AccessControl',
+                'class' => AccessControl::class,
             ],
             'verbs' => [ 
                 'class' => VerbFilter::className(),
@@ -47,7 +51,7 @@ class PostController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->can('post-list')) {
+        //if (Yii::$app->user->can('post-index')) {
         $searchModel = new PostSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -55,7 +59,7 @@ class PostController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-        }
+        //}
     }
 
     /**
@@ -66,13 +70,11 @@ class PostController extends Controller
      */
     public function actionView($id)
     {
-        if  (Yii::$app->user->can('post-view'))  {
+        //if  (Yii::$app->user->can('post-view'))  {
             return $this->render('view', [
                 'model' => $this->findModel($id),
             ]);
-        } else {
-            //
-        }
+       // } 
   
     }
 
@@ -83,7 +85,8 @@ class PostController extends Controller
      */
     public function actionCreate()
     {
-        if  (Yii::$app->user->can('post-create'))  {
+        $model = new Post();
+        //if  (Yii::$app->user->can('post-create'))  {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -91,7 +94,7 @@ class PostController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
-    }
+    //}
     }
 
     /**
@@ -103,7 +106,7 @@ class PostController extends Controller
      */
     public function actionUpdate($id)
     {
-        if  (Yii::$app->user->can('post-update'))  {
+        //if  (Yii::$app->user->can('post-update'))  {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -113,7 +116,7 @@ class PostController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
+    //}
 }
 
     /**
@@ -125,11 +128,11 @@ class PostController extends Controller
      */
     public function actionDelete($id)
     {
-        if  (Yii::$app->user->can('post-delete'))  {
+        //if  (Yii::$app->user->can('post-delete'))  {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    //}
     }
     /**
      * Finds the Post model based on its primary key value.
