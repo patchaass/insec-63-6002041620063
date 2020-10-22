@@ -47,9 +47,29 @@ class m201022_113359_create_permission_to_role extends Migration
      */
     public function safeDown()
     {
-        echo "m201022_113359_create_permission_to_role cannot be reverted.\n";
+        //echo "m201022_113359_create_permission_to_role cannot be reverted.\n";
 
-        return false;
+        $auth = Yii::$app->authManager;
+         // get role
+         $author = $auth->getRole('author');
+         $admin = $auth->getRole('admin');
+         $superAdmin = $auth->getRole('super-admin');
+         //get Permission
+         $listPost = $auth->getPermission('post-index');
+         $createPost = $auth->getPermission('post-create');
+         $deletePost = $auth->getPermission('post-delete');
+         $updatePost = $auth->getPermission('post-update');
+         $viewPost = $auth->getPermission('post-view');
+         //assign
+         $auth->removeChild($author,$createPost);
+         $auth->removeChild($author,$listPost);
+         $auth->removeChild($author,$viewPost);
+         $auth->removeChild($author,$updatePost);
+         $auth->removeChild($admin,$author);
+         $auth->removeChild($superAdmin,$admin);
+         $auth->removeChild($superAdmin,$deletePost);
+            
+        return true;
     }
 
     /*
